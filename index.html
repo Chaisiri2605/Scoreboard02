@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Scoreboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0f3b0f;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin: 20px 0;
+        }
+
+        .scoreboard {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px auto;
+            width: 80%;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        }
+
+        .team {
+            text-align: center;
+        }
+
+        .team input {
+            font-size: 18px;
+            padding: 5px;
+            text-align: center;
+            width: 150px;
+            margin-bottom: 10px;
+        }
+
+        .score {
+            font-size: 72px;
+            margin: 10px 0;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .controls button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .controls button.up {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .controls button.down {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .controls button.reset {
+            background-color: #2196f3;
+            color: white;
+        }
+
+        .timer {
+            font-size: 48px;
+            margin: 0 20px;
+            text-align: center;
+        }
+
+        .timer-controls {
+            margin-top: 10px;
+        }
+
+        .timer-controls button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .timer-controls button.start {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .timer-controls button.stop {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .timer-controls button.reset {
+            background-color: #2196f3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>PEA FOOTBALL CLUB 2567</h1>
+    <div class="scoreboard">
+        <div class="team">
+            <input type="text" id="homeTeam" placeholder="Home Team">
+            <div id="homeScore" class="score">0</div>
+            <div class="controls">
+                <button class="up" onclick="incrementScore('home')">&#9650;</button>
+                <button class="down" onclick="decrementScore('home')">&#9660;</button>
+                <button class="reset" onclick="resetScore('home')">Reset</button>
+            </div>
+        </div>
+
+        <div class="timer">
+            <span id="timer">00:00</span>
+            <div class="timer-controls">
+                <button class="start" onclick="startTimer()">Start</button>
+                <button class="stop" onclick="stopTimer()">Stop</button>
+                <button class="reset" onclick="resetTimer()">Reset</button>
+            </div>
+        </div>
+
+        <div class="team">
+            <input type="text" id="awayTeam" placeholder="Away Team">
+            <div id="awayScore" class="score">0</div>
+            <div class="controls">
+                <button class="up" onclick="incrementScore('away')">&#9650;</button>
+                <button class="down" onclick="decrementScore('away')">&#9660;</button>
+                <button class="reset" onclick="resetScore('away')">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let homeScore = 0;
+        let awayScore = 0;
+        let timerInterval;
+        let timeElapsed = 0;
+
+        function incrementScore(team) {
+            if (team === 'home') {
+                homeScore++;
+                document.getElementById('homeScore').innerText = homeScore;
+            } else {
+                awayScore++;
+                document.getElementById('awayScore').innerText = awayScore;
+            }
+        }
+
+        function decrementScore(team) {
+            if (team === 'home' && homeScore > 0) {
+                homeScore--;
+                document.getElementById('homeScore').innerText = homeScore;
+            } else if (team === 'away' && awayScore > 0) {
+                awayScore--;
+                document.getElementById('awayScore').innerText = awayScore;
+            }
+        }
+
+        function resetScore(team) {
+            if (team === 'home') {
+                homeScore = 0;
+                document.getElementById('homeScore').innerText = homeScore;
+            } else {
+                awayScore = 0;
+                document.getElementById('awayScore').innerText = awayScore;
+            }
+        }
+
+        function startTimer() {
+            if (!timerInterval) {
+                timerInterval = setInterval(() => {
+                    timeElapsed++;
+                    const minutes = String(Math.floor(timeElapsed / 60)).padStart(2, '0');
+                    const seconds = String(timeElapsed % 60).padStart(2, '0');
+                    document.getElementById('timer').innerText = `${minutes}:${seconds}`;
+                }, 1000);
+            }
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+        }
+
+        function resetTimer() {
+            stopTimer();
+            timeElapsed = 0;
+            document.getElementById('timer').innerText = '00:00';
+        }
+    </script>
+</body>
+</html>
